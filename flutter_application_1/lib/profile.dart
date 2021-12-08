@@ -16,16 +16,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String password = '';
   final formkey = GlobalKey<FormState>();
 
-  static Future<User?> signOut({required String email, required String password, required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-    await auth.signOut();
-    user = null;
-    if(user == null){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
-    }
-    return user;
-  }
+  // static Future<User?> signOut() async {
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   User? user;
+  //   await auth.signOut();
+    
+    
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(
+  //         builder: (BuildContext context) => LoginScreen()
+  //         ));
+    
+  //   return user;
+  // }
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -148,7 +151,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onPressed: () async {
         // formkey.currentState!.validate();
         FirebaseAuth auth = FirebaseAuth.instance;
-        await auth.signOut();
+        await auth.signOut().then((value){
+          Navigator.pushReplacement(context, 
+          MaterialPageRoute(builder: (context){
+            return LoginScreen();
+          }));
+        });//logout function
+        
       },
       child: Text(
         "Logout",
@@ -156,6 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           fontSize: 19,
           fontWeight: FontWeight.w600,
         ),
+        
       ),
     );
   }
